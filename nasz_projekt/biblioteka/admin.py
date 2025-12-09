@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Torebka
+from .models import Bag
 
-admin.site.register(Torebka)
+admin.site.register(Bag)
