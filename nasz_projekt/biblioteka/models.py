@@ -27,3 +27,4 @@ class Bag(models.Model):
     fabric = models.IntegerField(choices = FABRIC.choices, default= FABRIC.choices[6][0])
     price = models.PositiveIntegerField(null=False, blank=False, verbose_name="price in zł")
   
+  ## koszyk itp tez sie dodaje tu w klasach, podsumowanie zamowienia, profil uytkownika, historia zamówien itd
