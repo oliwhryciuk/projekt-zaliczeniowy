@@ -1,4 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django import forms 
+from django_countries.widgets import CountrySelectWidget
+from django_countries import countries
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 #dodawanie torebek 
 
@@ -26,5 +32,72 @@ class Bag(models.Model):
     color = models.IntegerField(choices = COLOR.choices, default= COLOR.choices[14][0])
     fabric = models.IntegerField(choices = FABRIC.choices, default= FABRIC.choices[6][0])
     price = models.PositiveIntegerField(null=False, blank=False, verbose_name="price in zł")
-  
-  ## koszyk itp tez sie dodaje tu w klasach, podsumowanie zamowienia, profil uytkownika, historia zamówien itd
+    amount = models.PositiveIntegerField() 
+
+    def __str__(self):
+        return f"{self.brand} {self.model}"
+    
+
+class User_acc(models.Model):
+    django_user = models.OneToOneField(User)
+    name = models.CharField(max_length= 100, null = False,  blank = False )
+    surname = models.CharField(max_length= 100, null = False,  blank = False )
+    email = models.EmailField(unique = True, null = False,  blank = False )
+    street_name = models.CharField(max_length= 100, null = False,  blank = False )
+    home_nr = models.CharField(max_length= 10, null = False,  blank = False )
+    city = models.CharField(max_length= 100, null = False,  blank = False )
+    zip_code = models.CharField(max_length= 6, null = False,  blank = False )
+    country = forms.ChoiceField(widget = CountrySelectWidget)
+    phone_number = PhoneNumberField(blank = False, null = False)
+
+
+class Cart(models.Model):
+    user_cart = models.OneToOneField(User_acc, on_delete = models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Koszyk {self.user}"
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete = models.CASCADE, related_name="items")
+    bag = models.ForeignKey(Bag, on_delete = models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    price_at_time = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together = ("cart", "bag")
+
+    def __str__(self):
+        return f"{self.bag} x {self.quantity}"
+
+
+class Order_summary(models.Model):
+    user = models.ForeignKey(User_acc, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_price = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Podsumowanie {self.id}"
+
+
+class OrderSummaryItem(models.Model):
+    summary = models.ForeignKey(Order_summary, on_delete=models.CASCADE, related_name="items")
+    bag = models.ForeignKey(Bag, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField()
+    price_at_time = models.PositiveIntegerField()
+
+
+class Order(models.Model):
+    class Status(models.TextChoices):
+        NEW = "new", "Nowe"
+        SENT = "sent", "Wysłane"
+        DONE = "done", "Zakończone"
+        CANCELED = "canceled", "Anulowane"
+
+    user = models.ForeignKey(User_acc, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_price = models.PositiveIntegerField()
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
+
+    def __str__(self):
+        return f"Zamówienie #{self.id}"
