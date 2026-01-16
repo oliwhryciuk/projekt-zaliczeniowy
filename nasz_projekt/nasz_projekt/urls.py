@@ -20,3 +20,10 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+path(
+    "order-summary/",
+    go_to_order_summary,
+    name="go_to_order_summary"
+)
+
