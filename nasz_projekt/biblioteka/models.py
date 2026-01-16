@@ -71,7 +71,7 @@ class CartItem(models.Model):
         return f"{self.bag} x {self.quantity}"
 
 
-class Order_summary(models.Model):
+class OrderSummary(models.Model):
     user = models.ForeignKey(User_acc, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     total_price = models.PositiveIntegerField(default=0)
@@ -81,7 +81,7 @@ class Order_summary(models.Model):
 
 
 class OrderSummaryItem(models.Model):
-    summary = models.ForeignKey(Order_summary, on_delete=models.CASCADE, related_name="items")
+    summary = models.ForeignKey(OrderSummary, on_delete=models.CASCADE, related_name="items")
     bag = models.ForeignKey(Bag, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField()
     price_at_time = models.PositiveIntegerField()
@@ -101,3 +101,4 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Zamówienie #{self.id}"
+

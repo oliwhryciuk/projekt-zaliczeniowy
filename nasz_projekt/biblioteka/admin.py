@@ -1,12 +1,12 @@
 from django.contrib import admin
 from .models import Bag
-from .models import Order, Order_summary, OrderSummaryItem
+from .models import Order, OrderSummary, OrderSummaryItem
 from .models import User_acc
 from .models import Cart, CartItem
 
 
 admin.site.register(Bag)
-admin.site.register(Order, Order_summary, OrderSummaryItem)
+admin.site.register(Order, OrderSummary, OrderSummaryItem)
 admin.site.register(User_acc)
 admin.site.register(Cart, CartItem)
 
