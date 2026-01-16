@@ -36,7 +36,7 @@ def go_to_order_summary(request):
     user = request.user.user_acc
     cart = Cart.objects.get(user_cart=user)
 
-    summary = Order_summary.objects.create(user=user)
+    summary = OrderSummary.objects.create(user=user)
 
     total = 0
 
@@ -57,7 +57,7 @@ def go_to_order_summary(request):
 
 #widok szczegółów podsumowania zamówienia
 def order_summary_detail(request, summary_id):
-    summary = Order_summary.objects.get(
+    summary = OrderSummary.objects.get(
         id=summary_id,
         user=request.user.user_acc
     )
@@ -71,7 +71,7 @@ def order_summary_detail(request, summary_id):
 @transaction.atomic
 def checkout(request, summary_id):
     user = request.user.user_acc
-    summary = Order_summary.objects.select_for_update().get(
+    summary = OrderSummary.objects.select_for_update().get(
         id=summary_id,
         user=user
     )
