@@ -12,29 +12,29 @@ class User_accSerializer(serializers.ModelSerializer):
         model = User_acc
         exclude = ["django_user"]
 
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = "__all__"
 
-class CartSerializers(serializers.ModelSerializer):
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer( many = True, read_only = True)
     class Meta:
         model = Cart
         fields = "__all__"
 
 
-class CartItemSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = "__all__"
-
-class OrderSummarySerializers(serializers.ModelSerializer):
+class OrderSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderSummary
         fields = "__all__"
 
-class OrderSummaryItemSerializers(serializers.ModelSerializer):
+class OrderSummaryItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderSummaryItem
         fields = "__all__"
 
-class OrderSerializers(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
