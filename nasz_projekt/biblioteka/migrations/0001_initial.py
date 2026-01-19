@@ -15,9 +15,9 @@ class Migration(migrations.Migration):
             name='Torebka',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nazwa_modelu', models.CharField(max_length=100)),
-                ('marka', models.CharField(max_length=50)),
-                ('rozmiar', models.IntegerField(choices=[(1, 'Mini'), (2, 'Midi'), (3, 'Maxi')], default=3)),
+                ('model', models.CharField(max_length=100)),
+                ('brand', models.CharField(max_length=50)),
+                ('size', models.IntegerField(choices=[(1, 'Mini'), (2, 'Midi'), (3, 'Maxi')], default=3)),
             ],
         ),
     ]

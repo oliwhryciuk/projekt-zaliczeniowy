@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django import forms 
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 #dodawanie torebek 
@@ -55,7 +58,7 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Koszyk {self.user_cart}"
+        return f"Cart {self.user_cart}"
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete = models.CASCADE, related_name="items")
@@ -76,7 +79,7 @@ class OrderSummary(models.Model):
     total_price = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"Podsumowanie {self.id}"
+        return f"Order Summary {self.id}"
 
 
 class OrderSummaryItem(models.Model):
@@ -88,10 +91,10 @@ class OrderSummaryItem(models.Model):
 
 class Order(models.Model):
     class Status(models.TextChoices):
-        NEW = "new", "Nowe"
-        SENT = "sent", "Wysłane"
-        DONE = "done", "Zakończone"
-        CANCELED = "canceled", "Anulowane"
+        NEW = "new", "New"
+        SENT = "sent", "Sent"
+        DONE = "done", "Completed"
+        CANCELED = "canceled", "Canceled"
 
     user = models.ForeignKey(User_acc, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -99,5 +102,35 @@ class Order(models.Model):
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
 
     def __str__(self):
-        return f"Zamówienie #{self.id}"
+        return f"Order #{self.id}"
+
+
+@receiver(post_save, sender=User)
+def create_user_account(sender, instance, created, **kwargs):
+    """Automatically create User_acc and Token when a new User is created"""
+    if created:
+        # Create User_acc with default values
+        try:
+            User_acc.objects.get_or_create(
+                django_user=instance,
+                defaults={
+                    'name': instance.first_name or instance.username,
+                    'surname': instance.last_name or instance.username,
+                    'email': instance.email or f'{instance.username}@example.com',
+                    'street_name': 'Not provided',
+                    'home_nr': '0',
+                    'city': 'Not provided',
+                    'zip_code': '00-000',
+                    'country': 'US',
+                    'phone_number': '+1234567890',
+                }
+            )
+        except Exception:
+            pass
+        
+        # Create authentication token
+        Token.objects.get_or_create(user=instance)
+
+# Connect the signal
+post_save.connect(create_user_account, sender=User)
 
