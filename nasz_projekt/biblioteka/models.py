@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django import forms 
-from django_countries.widgets import CountrySelectWidget
-from django_countries import countries
+from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -25,17 +24,17 @@ FABRIC = models.IntegerChoices(
 
 
 class Bag(models.Model):
-    
-    model = models.CharField(max_length= 100, null = False,  blank = False )
+    model_name = models.CharField(max_length= 100, null = False,  blank = False )
     brand =  models.CharField(max_length= 50, null = False,  blank = False )
     size = models.IntegerField(choices = SIZE.choices, default= SIZE.choices[2][0])
     color = models.IntegerField(choices = COLOR.choices, default= COLOR.choices[14][0])
     fabric = models.IntegerField(choices = FABRIC.choices, default= FABRIC.choices[6][0])
     price = models.PositiveIntegerField(null=False, blank=False, verbose_name="price in zł")
     amount = models.PositiveIntegerField() 
+    photo = models.ImageField(upload_to='bag_photos/', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.brand} {self.model}"
+        return f"{self.brand} {self.model_name}"
     
 
 class User_acc(models.Model):
@@ -47,7 +46,7 @@ class User_acc(models.Model):
     home_nr = models.CharField(max_length= 10, null = False,  blank = False )
     city = models.CharField(max_length= 100, null = False,  blank = False )
     zip_code = models.CharField(max_length= 6, null = False,  blank = False )
-    country = forms.ChoiceField(widget = CountrySelectWidget)
+    country = CountryField(blank=False)
     phone_number = PhoneNumberField(blank = False, null = False)
 
 
