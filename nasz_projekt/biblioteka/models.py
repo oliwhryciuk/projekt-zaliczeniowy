@@ -39,7 +39,7 @@ class Bag(models.Model):
     
 
 class User_acc(models.Model):
-    django_user = models.OneToOneField(User)
+    django_user = models.OneToOneField(User, on_delete = models.CASCADE)
     name = models.CharField(max_length= 100, null = False,  blank = False )
     surname = models.CharField(max_length= 100, null = False,  blank = False )
     email = models.EmailField(unique = True, null = False,  blank = False )
@@ -56,7 +56,7 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Koszyk {self.user}"
+        return f"Koszyk {self.user_cart}"
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete = models.CASCADE, related_name="items")
