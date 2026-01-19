@@ -6,19 +6,21 @@ from .models import Cart, CartItem
 
 
 admin.site.register(Bag)
-admin.site.register(Order, OrderSummary, OrderSummaryItem)
+admin.site.register(Order)
+admin.site.register(OrderSummary)
+admin.site.register(OrderSummaryItem)
 admin.site.register(User_acc)
-admin.site.register(Cart, CartItem)
+admin.site.register(Cart)
+admin.site.register(CartItem)
 
 
 class OrderItemInline(admin.TabularInline):
-    model = OrderItem
+    model = OrderSummaryItem
     extra = 0
     readonly_fields = ("bag", "quantity", "price_at_time")
     can_delete = False
 
 
-@admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         "id",
