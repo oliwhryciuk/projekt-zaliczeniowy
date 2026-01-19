@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; }
+        .container { max-width: 400px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 40px; }
+        h2 { text-align: center; margin-top: 0; margin-bottom: 30px; }
+        form { display: flex; flex-direction: column; gap: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-weight: bold; }
+        input[type="text"], input[type="password"], input[type="email"], input[type="tel"] { width: 100%; padding: 12px; border-radius: 5px; border: 1px solid #ccc; font-size: 1em; box-sizing: border-box; }
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus { outline: none; border-color: #222; background-color: #f9f9f9; }
+        input.error { border-color: #b00; background-color: #fff5f5; }
+        .error-message { color: #b00; font-size: 0.9em; }
+        .error-list { list-style: none; padding: 0; margin: 0; }
+        .error-list li { color: #b00; font-size: 0.9em; margin: 3px 0; }
+        .general-error { color: #b00; text-align: center; margin-bottom: 15px; font-weight: bold; }
+        button { width: 100%; padding: 12px; background: #222; color: #fff; border: none; border-radius: 5px; font-size: 1.1em; cursor: pointer; font-weight: bold; }
+        button:hover { background: #444; }
+        .back { text-align: center; margin-top: 20px; }
+        .back a { color: #222; text-decoration: none; }
+        .back a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration</h2>
+        {% if error %}
+            <div class="general-error">
+                {% if error.items %}
+                    {% for field, messages in error.items %}
+                        <div>{{ field }}: 
+                            {% if messages.0 %}
+                                {{ messages.0 }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {{ error }}
+                {% endif %}
+            </div>
+        {% endif %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="error-list">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit">Register</button>
+        </form>
+        <div class="back">
+            <a href="/login-page">Already have an account? Log in</a>
+        </div>
+    </div>
+</body>
+</html>

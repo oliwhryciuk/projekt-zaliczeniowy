@@ -3,9 +3,9 @@ from django.db import transaction
 from django.http import JsonResponse, HttpResponseForbidden
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Bag, Cart, CartItem, OrderSummary, OrderSummaryItem, Order
+from .models import Bag, Cart, CartItem, OrderSummary, OrderSummaryItem, Order, User_acc
 from .serializers import BagSerializer, CartSerializer, OrderSummarySerializer
-from .forms import CheckoutForm
+from .forms import CheckoutForm, CustomUserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -227,19 +227,30 @@ def register(request):
         return redirect('/')
     error = None
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             # Check if passwords match
             if request.POST.get('password1') != request.POST.get('password2'):
                 error = 'Passwords do not match.'
             else:
-                user = form.save()
+                user = form.save(commit=False)
+                user.email = form.cleaned_data['email']
+                user.save()
+                
+                # Save phone number to User_acc
+                try:
+                    user_acc = user.user_acc
+                    user_acc.phone_number = form.cleaned_data['phone_number']
+                    user_acc.save()
+                except User_acc.DoesNotExist:
+                    pass
+                
                 login(request, user)
                 return redirect('/')
         else:
-            error = 'Registration form is invalid. Password must be at least 8 characters.'
+            error = form.errors
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form, 'error': error})
 
 def small_bags_page(request):
