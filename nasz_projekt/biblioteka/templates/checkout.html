@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Bagz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #222; color: #fff; padding: 20px 40px; }
+        .header .company { font-size: 2.5em; font-weight: bold; letter-spacing: 2px; cursor: pointer; }
+        .header .auth { font-size: 1.1em; }
+        .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 30px; }
+        h2 { margin-top: 0; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1em; box-sizing: border-box; }
+        input:focus, select:focus { outline: none; border-color: #222; background-color: #f9f9f9; }
+        input.error { border-color: #b00; background-color: #fff5f5; }
+        button { width: 100%; padding: 12px; background: #222; color: #fff; border: none; border-radius: 5px; font-size: 1.1em; cursor: pointer; font-weight: bold; }
+        button:hover { background: #444; }
+        .error { color: #b00; text-align: center; margin-bottom: 10px; font-weight: bold; }
+        .error p { margin: 3px 0; }
+        .success { color: #080; text-align: center; margin-bottom: 10px; font-weight: bold; }
+        .back-link { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #ccc; color: #333; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company" onclick="window.location='/';" style="cursor: pointer;">Bagz</div>
+        <div class="auth">
+            {% if user.is_authenticated %}
+                <span style="margin-right:20px;">{{ user.username }}</span>
+                <a href="/cart" id="cart-link" style="color:#fff; text-decoration:none; margin-right:20px;">Cart</a>
+                <a href="/logout" id="logout-link" style="color:#fff; text-decoration:none;">Logout</a>
+            {% else %}
+                <a href="/login-page" id="login-link" style="color:#fff; text-decoration:none; margin-right:20px;">Login</a>
+                <a href="/register/" id="register-link" style="color:#fff; text-decoration:none; margin-right:20px;">Register</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <h2>Delivery Information</h2>
+        
+        {% if form.non_field_errors %}
+            <div class="error">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {% if field.field.widget.input_type == 'email' %}
+                        {{ field }}
+                    {% elif field.field.widget.input_type == 'tel' %}
+                        {{ field }}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="error" style="margin-top: 5px; font-weight: normal; text-align: left;">
+                            {% for error in field.errors %}
+                                <p style="margin: 3px 0;">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit">Complete Order</button>
+        </form>
+        
+        <a href="/cart" class="back-link">Back to Cart</a>
+    </div>
+    
+    <script>
+        {% if success %}
+        // Show thank you pop-up and redirect to cart
+        alert('Thank you for your order!');
+        window.location.href = '/cart';
+        {% endif %}
+    </script>
+</body>
+</html>

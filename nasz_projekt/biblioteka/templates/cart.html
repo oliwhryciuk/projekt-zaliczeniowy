@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart - Bagz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #222; color: #fff; padding: 20px 40px; }
+        .header .company { font-size: 2.5em; font-weight: bold; letter-spacing: 2px; cursor: pointer; }
+        .header .auth { font-size: 1.1em; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 30px; }
+        h2 { margin-top: 0; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0; }
+        .cart-item:last-child { border-bottom: none; }
+        .item-info { flex: 1; }
+        .item-name { font-weight: bold; }
+        .item-price { color: #666; }
+        .total { text-align: right; margin-top: 20px; font-size: 1.2em; font-weight: bold; }
+        .empty-cart { text-align: center; color: #999; padding: 40px 0; }
+        .back-link { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #222; color: #fff; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company" onclick="window.location='/'">Bagz</div>
+        <div class="auth">
+            {% if user.is_authenticated %}
+                <span style="margin-right:20px;">{{ user.username }}</span>
+                <a href="/cart" id="cart-link" style="color:#fff; text-decoration:none; margin-right:20px;">Cart</a>
+                <a href="/logout" id="logout-link" style="color:#fff; text-decoration:none;">Logout</a>
+            {% else %}
+                <a href="/login-page" id="login-link" style="color:#fff; text-decoration:none; margin-right:20px;">Login</a>
+                <a href="/register/" id="register-link" style="color:#fff; text-decoration:none; margin-right:20px;">Register</a>
+                <a href="/cart" id="cart-link" style="color:#fff; text-decoration:none;">Cart</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <h2>Your Cart</h2>
+        {% if items %}
+            {% for item in items %}
+                <div class="cart-item">
+                    <div class="item-info">
+                        <div class="item-name">{{ item.bag.brand }} {{ item.bag.model_name }}</div>
+                        <div class="item-price">Quantity: {{ item.quantity }} x {{ item.price_at_time }} zł</div>
+                    </div>
+                    <div style="font-weight: bold;">{{ item.quantity }} x {{ item.price_at_time }} zł</div>
+                </div>
+            {% endfor %}
+            <div class="total">Total: {{ total }} zł</div>
+            <div style="text-align: right; margin-top: 30px;">
+                <a href="/checkout" style="display: inline-block; padding: 12px 30px; background: #222; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;">Checkout</a>
+                <a href="/" class="back-link">Continue Shopping</a>
+            </div>
+        {% else %}
+            <div class="empty-cart">Your cart is empty</div>
+        {% endif %}
+    </div>
+</body>
+</html>

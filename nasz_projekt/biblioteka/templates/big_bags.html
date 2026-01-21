@@ -2,16 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bagz - Main Page</title>
+    <title>Big Bags - Bagz</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7f7; }
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; }
         .header { display: flex; justify-content: space-between; align-items: center; background: #222; color: #fff; padding: 20px 40px; }
         .header .company { font-size: 2.5em; font-weight: bold; letter-spacing: 2px; }
         .header .auth { font-size: 1.1em; }
-        .main-panes { display: flex; justify-content: center; gap: 40px; margin: 40px 0 30px 0; }
-        .pane { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 30px 50px; text-align: center; font-size: 1.3em; font-weight: 500; transition: box-shadow 0.2s; cursor: pointer; }
-        .pane:hover { box-shadow: 0 4px 16px #0002; background: #f0f0f0; }
-        .bags-list { max-width: 900px; margin: 0 auto 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 30px; }
+        .bags-list { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 30px; }
         .bags-list h2 { margin-top: 0; }
         .bag-item { display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #eee; padding: 18px 0; }
         .bag-item:last-child { border-bottom: none; }
@@ -19,6 +16,8 @@
         .bag-info { flex: 1; }
         .bag-title { font-size: 1.1em; font-weight: bold; }
         .bag-meta { color: #666; font-size: 0.95em; }
+        .return-btn { display: inline-block; margin-top: 30px; padding: 12px 30px; background: #222; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; text-align: center; transition: background 0.3s; }
+        .return-btn:hover { background: #444; }
     </style>
     <script>
         async function fetchBags() {
@@ -26,7 +25,8 @@
             const bags = await resp.json();
             const list = document.getElementById('bags-list');
             list.innerHTML = '';
-            bags.forEach(bag => {
+            // Only show big bags (size == 3)
+            bags.filter(bag => bag.size === 3).forEach(bag => {
                 const div = document.createElement('div');
                 div.className = 'bag-item';
                 let photoPath = '';
@@ -65,14 +65,10 @@
             {% endif %}
         </div>
     </div>
-    <div class="main-panes">
-        <a class="pane" href="/bags/small-bags">Small Bags</a>
-        <a class="pane" href="/bags/medium-bags">Medium Bags</a>
-        <a class="pane" href="/bags/big-bags">Big Bags</a>
-    </div>
     <div class="bags-list">
-        <h2>All Bags</h2>
+        <h2>Big Bags</h2>
         <div id="bags-list"></div>
+        <a href="/" class="return-btn">Return to Homepage</a>
     </div>
 </body>
 </html>
