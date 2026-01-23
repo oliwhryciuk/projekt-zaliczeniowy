@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Cart - Bagz{% endblock %}
+
+{% block content %}
+<style>
+    .container { 
+        max-width: 900px; 
+        margin: 0 auto; 
+        background: #fff; 
+        border-radius: 12px; 
+        box-shadow: 0 2px 8px #0001; 
+        padding: 40px;
+    }
+    h2 { 
+        margin: 0 0 30px 0;
+        font-size: 1.8em;
+        color: #222;
+    }
+    .cart-item { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        border-bottom: 1px solid #eee; 
+        padding: 20px 0;
+        transition: background 0.2s;
+    }
+    .cart-item:hover {
+        background: #f9f9f9;
+    }
+    .cart-item:last-child { 
+        border-bottom: none; 
+    }
+    .item-info { 
+        flex: 1;
+        min-width: 0;
+    }
+    .item-name { 
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #222;
+    }
+    .item-price { 
+        color: #666;
+        font-size: 0.95em;
+    }
+    .total { 
+        text-align: right; 
+        margin-top: 30px; 
+        font-size: 1.3em; 
+        font-weight: bold;
+        padding-top: 20px;
+        border-top: 2px solid #222;
+        color: #222;
+    }
+    .empty-cart { 
+        text-align: center; 
+        color: #999; 
+        padding: 80px 40px;
+        font-size: 1.1em;
+    }
+    .button-group {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+    .checkout-btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background: #222;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .checkout-btn:hover {
+        background: #444;
+    }
+    .back-link { 
+        display: inline-block; 
+        padding: 12px 30px; 
+        background: #f0f0f0; 
+        color: #222;
+        text-decoration: none; 
+        border-radius: 5px;
+        font-weight: 500;
+        transition: background 0.2s;
+    }
+    .back-link:hover {
+        background: #e0e0e0;
+    }
+</style>
+<div class="container">
+    <h2>Your Cart</h2>
+    {% if items %}
+        {% for item in items %}
+            <div class="cart-item">
+                <div class="item-info">
+                    <div class="item-name">{{ item.bag.brand }} {{ item.bag.model_name }}</div>
+                    <div class="item-price">Quantity: {{ item.quantity }} x {{ item.price_at_time }} zł</div>
+                </div>
+                <div style="font-weight: bold;">{{ item.quantity }} x {{ item.price_at_time }} zł</div>
+            </div>
+        {% endfor %}
+        <div class="total">Total: {{ total }} zł</div>
+        <div class="button-group">
+            <a href="{% url 'store:checkout' %}" class="checkout-btn">Checkout</a>
+            <a href="{% url 'store:main-page' %}" class="back-link">Continue Shopping</a>
+        </div>
+    {% else %}
+        <div class="empty-cart">Your cart is empty</div>
+    {% endif %}
+</div>
+{% endblock %}

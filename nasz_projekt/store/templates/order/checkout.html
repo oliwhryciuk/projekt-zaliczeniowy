@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - Bagz{% endblock %}
+
+{% block content %}
+<style>
+    .container { 
+        max-width: 600px; 
+        margin: 0 auto; 
+        background: #fff; 
+        border-radius: 12px; 
+        box-shadow: 0 2px 8px #0001; 
+        padding: 40px;
+    }
+    h2 { 
+        margin: 0 0 30px 0;
+        font-size: 1.8em;
+        color: #222;
+    }
+    .form-group { 
+        margin-bottom: 25px; 
+    }
+    label { 
+        display: block; 
+        font-weight: bold; 
+        margin-bottom: 8px;
+        color: #333;
+    }
+    input, select { 
+        width: 100%; 
+        padding: 12px; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        font-size: 1em; 
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+    input:focus, select:focus { 
+        outline: none; 
+        border-color: #222; 
+        background-color: #f9f9f9; 
+        box-shadow: 0 0 0 3px rgba(34, 34, 34, 0.1);
+    }
+    input.error { 
+        border-color: #b00; 
+        background-color: #fff5f5; 
+    }
+    button { 
+        width: 100%; 
+        padding: 14px; 
+        background: #222; 
+        color: #fff; 
+        border: none; 
+        border-radius: 5px; 
+        font-size: 1.1em; 
+        cursor: pointer; 
+        font-weight: bold;
+        transition: background 0.2s;
+        margin-top: 10px;
+    }
+    button:hover { 
+        background: #444; 
+    }
+    .error { 
+        color: #b00; 
+        text-align: center; 
+        margin-bottom: 20px; 
+        font-weight: bold;
+        padding: 15px;
+        background: #fff5f5;
+        border-radius: 5px;
+    }
+    .error p { 
+        margin: 5px 0; 
+    }
+    .success { 
+        color: #080; 
+        text-align: center; 
+        margin-bottom: 20px; 
+        font-weight: bold;
+        padding: 15px;
+        background: #f5fff5;
+        border-radius: 5px;
+    }
+    .back-link { 
+        display: inline-block; 
+        margin-top: 20px; 
+        padding: 12px 30px; 
+        background: #f0f0f0; 
+        color: #222;
+        text-decoration: none; 
+        border-radius: 5px;
+        font-weight: 500;
+        transition: background 0.2s;
+    }
+    .back-link:hover {
+        background: #e0e0e0;
+    }
+</style>
+<div class="container">
+    <h2>Delivery Information</h2>
+    
+    {% if form.non_field_errors %}
+        <div class="error">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {% if field.field.widget.input_type == 'email' %}
+                    {{ field }}
+                {% elif field.field.widget.input_type == 'tel' %}
+                    {{ field }}
+                {% else %}
+                    {{ field }}
+                {% endif %}
+                {% if field.errors %}
+                    <div class="error" style="margin-top: 5px; font-weight: normal; text-align: left;">
+                        {% for error in field.errors %}
+                            <p style="margin: 3px 0;">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit">Complete Order</button>
+    </form>
+    
+    <a href="{% url 'store:cart' %}" class="back-link">Back to Cart</a>
+</div>
+
+<script>
+    {% if success %}
+    // Show thank you pop-up and redirect to cart
+    alert('Thank you for your order!');
+    window.location.href = '{% url "store:cart" %}';
+    {% endif %}
+</script>
+{% endblock %}

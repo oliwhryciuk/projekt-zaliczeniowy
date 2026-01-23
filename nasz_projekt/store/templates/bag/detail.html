@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}{{ bag.brand }} {{ bag.model_name }} - Details{% endblock %}
+
+{% block content %}
+<style>
+    .container { 
+        max-width: 500px; 
+        margin: 0 auto; 
+        background: #fff; 
+        border-radius: 12px; 
+        box-shadow: 0 2px 8px #0001; 
+        padding: 35px;
+    }
+    .bag-photo { 
+        width: 200px; 
+        height: 200px; 
+        object-fit: cover; 
+        border-radius: 8px; 
+        background: #eee; 
+        display: block; 
+        margin: 0 auto 25px auto; 
+    }
+    .bag-title { 
+        font-size: 1.4em; 
+        font-weight: bold; 
+        text-align: center; 
+        margin-bottom: 10px;
+        color: #222;
+    }
+    .bag-meta { 
+        color: #666; 
+        font-size: 1.1em; 
+        text-align: center; 
+        margin-bottom: 25px;
+        font-weight: 500;
+    }
+    .bag-details { 
+        margin-bottom: 25px;
+        background: #f9f9f9;
+        padding: 18px;
+        border-radius: 8px;
+        font-size: 0.95em;
+    }
+    .bag-details div {
+        margin-bottom: 8px;
+        color: #555;
+    }
+    .bag-details div:last-child {
+        margin-bottom: 0;
+    }
+    .error { 
+        color: #b00; 
+        text-align: center; 
+        margin-bottom: 12px;
+        font-weight: bold;
+        padding: 10px;
+        background: #fff5f5;
+        border-radius: 5px;
+        font-size: 0.95em;
+    }
+    .success { 
+        color: #080; 
+        text-align: center; 
+        margin-bottom: 12px;
+        font-weight: bold;
+        padding: 10px;
+        background: #f5fff5;
+        border-radius: 5px;
+        font-size: 0.95em;
+    }
+    .form-compact { 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 8px; 
+        margin: 25px 0;
+        flex-wrap: nowrap;
+    }
+    .form-compact select { 
+        padding: 8px 10px; 
+        font-size: 0.95em; 
+        border: 1px solid #ccc; 
+        border-radius: 4px;
+        background: #fff;
+        white-space: nowrap;
+    }
+    .form-compact button { 
+        padding: 8px 16px; 
+        font-size: 0.9em; 
+        background: #222; 
+        color: #fff; 
+        border: none; 
+        border-radius: 4px; 
+        cursor: pointer; 
+        font-weight: 500;
+        transition: background 0.2s;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .form-compact button:hover { 
+        background: #444; 
+    }
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+        padding: 10px 20px;
+        background: #f0f0f0;
+        color: #222;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background 0.2s;
+        font-size: 0.95em;
+    }
+    .back-link:hover {
+        background: #e0e0e0;
+    }
+</style>
+<div class="container">
+    {% if bag.photo %}
+        <img class="bag-photo" src="{{ bag.photo.url }}" alt="Bag photo">
+    {% endif %}
+    <div class="bag-title">{{ bag.brand }} {{ bag.model_name }}</div>
+    <div class="bag-meta">Price: {{ bag.price }} zł</div>
+    <div class="bag-details">
+        <div>Size: {{ bag.get_size_display }}</div>
+        <div>Color: {{ bag.get_color_display }}</div>
+        <div>Material: {{ bag.get_fabric_display }}</div>
+        <div>Available: {{ bag.amount }}</div>
+    </div>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    {% if success %}<div class="success">{{ success }}</div>{% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-compact">
+            <select name="quantity" id="quantity">
+                {% for i in "12345" %}
+                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Add to cart</button>
+        </div>
+    </form>
+    <a href="{% url 'store:main-page' %}" class="back-link">Back to main page</a>
+</div>
+{% endblock %}

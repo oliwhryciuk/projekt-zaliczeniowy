@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Big Bags - Bagz{% endblock %}
+
+{% block content %}
+<style>
+    .bags-list { 
+        max-width: 1000px; 
+        margin: 0 auto; 
+        background: #fff; 
+        border-radius: 12px; 
+        box-shadow: 0 2px 8px #0001; 
+        padding: 40px;
+    }
+    .bags-list h2 { 
+        margin: 0 0 30px 0;
+        font-size: 1.8em;
+        color: #222;
+    }
+    .bag-item { 
+        display: flex; 
+        align-items: center; 
+        gap: 20px; 
+        border-bottom: 1px solid #eee; 
+        padding: 20px 0;
+        transition: background 0.2s;
+    }
+    .bag-item:hover {
+        background: #f9f9f9;
+    }
+    .bag-item:last-child { 
+        border-bottom: none; 
+    }
+    .bag-photo { 
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover; 
+        border-radius: 8px; 
+        background: #eee;
+        flex-shrink: 0;
+        margin-left: 10px;
+        border: 1px solid #ddd;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .bag-info { 
+        flex: 1;
+        min-width: 0;
+    }
+    .bag-title { 
+        font-size: 1.1em; 
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .bag-title a { 
+        color: #222; 
+        text-decoration: none; 
+    }
+    .bag-title a:hover { 
+        text-decoration: underline; 
+    }
+    .bag-meta { 
+        color: #666; 
+        font-size: 0.95em; 
+    }
+    .return-btn { 
+        display: inline-block; 
+        margin-top: 30px; 
+        padding: 12px 30px; 
+        background: #222; 
+        color: #fff; 
+        text-decoration: none; 
+        border-radius: 5px; 
+        font-weight: bold; 
+        text-align: center; 
+        transition: background 0.3s; 
+    }
+    .return-btn:hover { 
+        background: #444; 
+    }
+</style>
+<div class="bags-list">
+    <h2>Big Bags</h2>
+    <div id="bags-list"></div>
+    <a href="{% url 'store:main-page' %}" class="return-btn">Return to Homepage</a>
+</div>
+<script>
+    async function fetchBags() {
+        const resp = await fetch('/api/bags/');
+        const bags = await resp.json();
+        const list = document.getElementById('bags-list');
+        list.innerHTML = '';
+        bags.filter(bag => bag.size === 3).forEach(bag => {
+            const div = document.createElement('div');
+            div.className = 'bag-item';
+            let photoPath = '';
+            if (bag.photo) {
+                if (bag.photo.startsWith('/media/')) {
+                    photoPath = bag.photo;
+                } else if (bag.photo.startsWith('media/')) {
+                    photoPath = '/' + bag.photo;
+                } else {
+                    photoPath = '/media/' + bag.photo;
+                }
+            }
+            div.innerHTML = `
+                <img class="bag-photo" src="${photoPath}" alt="Bag photo" onerror="this.style.display='none'">
+                <div class="bag-info">
+                    <div class="bag-title"><a href="/bags/${bag.id}/">${bag.brand} ${bag.model_name}</a></div>
+                    <div class="bag-meta">Price: ${bag.price} zł</div>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    }
+    window.onload = fetchBags;
+</script>
+{% endblock %}

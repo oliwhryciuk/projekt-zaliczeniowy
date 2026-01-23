@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Bagz{% endblock %}
+
+{% block content %}
+<style>
+    .login-container { 
+        max-width: 450px; 
+        margin: 0 auto; 
+        background: #fff; 
+        border-radius: 12px; 
+        box-shadow: 0 2px 8px #0001; 
+        padding: 50px;
+    }
+    h2 { 
+        text-align: center; 
+        margin: 0 0 30px 0;
+        font-size: 1.8em;
+        color: #222;
+    }
+    form { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 20px; 
+    }
+    input[type="text"], input[type="password"] { 
+        width: 100%; 
+        padding: 12px; 
+        border-radius: 5px; 
+        border: 1px solid #ccc; 
+        font-size: 1em; 
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+        outline: none;
+        border-color: #222;
+        background-color: #f9f9f9;
+        box-shadow: 0 0 0 3px rgba(34, 34, 34, 0.1);
+    }
+    button { 
+        width: 100%; 
+        padding: 14px; 
+        background: #222; 
+        color: #fff; 
+        border: none; 
+        border-radius: 5px; 
+        font-size: 1.1em; 
+        cursor: pointer; 
+        font-weight: bold;
+        transition: background 0.2s;
+    }
+    button:hover { 
+        background: #444; 
+    }
+    .error { 
+        color: #b00; 
+        text-align: center; 
+        margin-bottom: 20px; 
+        font-weight: bold;
+        padding: 15px;
+        background: #fff5f5;
+        border-radius: 5px;
+    }
+    .back { 
+        text-align: center; 
+        margin-top: 20px; 
+    }
+    .back a { 
+        color: #222; 
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.2s;
+    }
+    .back a:hover { 
+        opacity: 0.7;
+    }
+</style>
+<div class="login-container">
+    <h2>Login to Bagz</h2>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Log in</button>
+    </form>
+    <div class="back">
+        <a href="{% url 'store:register-page' %}">Not registered yet?</a>
+    </div>
+</div>
+{% endblock %}
