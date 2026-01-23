@@ -6,41 +6,48 @@
 <style>
     .bags-list { 
         max-width: 1000px; 
-        margin: 0 auto; 
-        background: #fff; 
-        border-radius: 12px; 
-        box-shadow: 0 2px 8px #0001; 
-        padding: 40px;
+        margin: 40px auto; 
+        background: var(--white); 
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); 
+        padding: 50px;
     }
     .bags-list h2 { 
         margin: 0 0 30px 0;
         font-size: 1.8em;
-        color: #222;
+        color: var(--primary);
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 15px;
     }
     .bag-item { 
         display: flex; 
         align-items: center; 
         gap: 20px; 
-        border-bottom: 1px solid #eee; 
-        padding: 20px 0;
-        transition: background 0.2s;
+        border-bottom: 1px solid var(--border); 
+        padding: 25px 0;
+        transition: all 0.3s;
     }
     .bag-item:hover {
-        background: #f9f9f9;
+        background: var(--light-bg);
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: -10px;
+        margin-right: -10px;
     }
     .bag-item:last-child { 
         border-bottom: none; 
     }
     .bag-photo { 
-        width: 100px; 
-        height: 100px; 
+        width: 120px; 
+        height: 120px; 
         object-fit: cover; 
-        border-radius: 8px; 
-        background: #eee;
+        background: var(--light-bg);
         flex-shrink: 0;
-        margin-left: 10px;
-        border: 1px solid #ddd;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s;
+    }
+    .bag-item:hover .bag-photo {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
     .bag-info { 
         flex: 1;
@@ -48,34 +55,43 @@
     }
     .bag-title { 
         font-size: 1.1em; 
-        font-weight: bold;
-        margin-bottom: 5px;
+        font-weight: 600;
+        margin-bottom: 8px;
     }
     .bag-title a { 
-        color: #222; 
-        text-decoration: none; 
+        color: var(--primary); 
+        text-decoration: none;
+        transition: all 0.3s;
     }
     .bag-title a:hover { 
-        text-decoration: underline; 
+        color: var(--accent);
     }
     .bag-meta { 
-        color: #666; 
+        color: var(--text-light); 
         font-size: 0.95em; 
+    }
+    .bag-price {
+        font-size: 1.15em;
+        font-weight: 600;
+        color: var(--accent);
+        margin-top: 8px;
     }
     .return-btn { 
         display: inline-block; 
         margin-top: 30px; 
-        padding: 12px 30px; 
-        background: #222; 
-        color: #fff; 
+        padding: 14px 28px; 
+        background: var(--accent); 
+        color: var(--white); 
         text-decoration: none; 
-        border-radius: 5px; 
-        font-weight: bold; 
+        font-weight: 600; 
         text-align: center; 
-        transition: background 0.3s; 
+        transition: all 0.3s;
+        letter-spacing: 0.5px;
     }
     .return-btn:hover { 
-        background: #444; 
+        background: var(--accent-dark); 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(184, 92, 117, 0.25);
     }
 </style>
 <div class="bags-list">

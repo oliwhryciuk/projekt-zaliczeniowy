@@ -1,118 +1,213 @@
 {% extends "base.html" %}
 
-{% block title %}Cart - Bagz{% endblock %}
+{% block title %}Shopping Cart - Bagz{% endblock %}
 
 {% block content %}
 <style>
-    .container { 
-        max-width: 900px; 
-        margin: 0 auto; 
-        background: #fff; 
-        border-radius: 12px; 
-        box-shadow: 0 2px 8px #0001; 
-        padding: 40px;
+    .cart-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: var(--white);
+        padding: 60px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
-    h2 { 
-        margin: 0 0 30px 0;
-        font-size: 1.8em;
-        color: #222;
+    h2 {
+        font-size: 2.2em;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0 0 40px 0;
+        letter-spacing: 0.5px;
+        position: relative;
+        padding-bottom: 20px;
     }
-    .cart-item { 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        border-bottom: 1px solid #eee; 
-        padding: 20px 0;
-        transition: background 0.2s;
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--accent);
+    }
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        padding: 25px 0;
+        transition: all 0.3s;
+        gap: 20px;
     }
     .cart-item:hover {
-        background: #f9f9f9;
+        padding-left: 10px;
+        background: linear-gradient(to right, rgba(184, 92, 117, 0.02), transparent);
     }
-    .cart-item:last-child { 
-        border-bottom: none; 
+    .cart-item:last-child {
+        border-bottom: none;
     }
-    .item-info { 
+    .item-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
         flex: 1;
         min-width: 0;
     }
-    .item-name { 
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #222;
+    .item-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 0;
+        background: var(--light-bg);
+        border: 2px solid var(--border);
+        flex-shrink: 0;
     }
-    .item-price { 
-        color: #666;
+    .item-info {
+        flex: 1;
+        min-width: 0;
+    }
+    .item-name {
+        font-weight: 700;
+        font-size: 1.1em;
+        margin-bottom: 8px;
+        color: var(--primary);
+    }
+    .item-quantity {
+        color: var(--text-light);
         font-size: 0.95em;
     }
-    .total { 
-        text-align: right; 
-        margin-top: 30px; 
-        font-size: 1.3em; 
-        font-weight: bold;
-        padding-top: 20px;
-        border-top: 2px solid #222;
-        color: #222;
+    .item-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-shrink: 0;
     }
-    .empty-cart { 
-        text-align: center; 
-        color: #999; 
+    .item-price {
+        font-size: 1.3em;
+        font-weight: 700;
+        color: var(--accent);
+        min-width: 120px;
+        text-align: right;
+    }
+    .btn-remove {
+        background: transparent;
+        color: #d9534f;
+        border: 1px solid #d9534f;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 0.85em;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    .btn-remove:hover {
+        background: #d9534f;
+        color: var(--white);
+    }
+    .total-section {
+        text-align: right;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 2px solid var(--border);
+    }
+    .total-label {
+        font-size: 1.1em;
+        color: var(--text-light);
+        margin-bottom: 10px;
+    }
+    .total-amount {
+        font-size: 2em;
+        font-weight: 700;
+        color: var(--accent);
+    }
+    .empty-cart {
+        text-align: center;
+        color: var(--text-light);
         padding: 80px 40px;
         font-size: 1.1em;
     }
+    .empty-cart-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+        opacity: 0.3;
+    }
     .button-group {
         display: flex;
-        gap: 10px;
+        gap: 15px;
         justify-content: flex-end;
-        margin-top: 30px;
+        margin-top: 40px;
         flex-wrap: wrap;
     }
-    .checkout-btn {
-        display: inline-block;
-        padding: 12px 30px;
-        background: #222;
-        color: #fff;
+    .btn {
+        padding: 14px 40px;
+        border-radius: 0;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
         text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
+        border: none;
         cursor: pointer;
-        transition: background 0.2s;
+        font-size: 0.95em;
     }
-    .checkout-btn:hover {
-        background: #444;
+    .btn-primary {
+        background: var(--accent);
+        color: var(--white);
     }
-    .back-link { 
-        display: inline-block; 
-        padding: 12px 30px; 
-        background: #f0f0f0; 
-        color: #222;
-        text-decoration: none; 
-        border-radius: 5px;
-        font-weight: 500;
-        transition: background 0.2s;
+    .btn-primary:hover {
+        background: var(--accent-dark);
+        box-shadow: 0 8px 24px rgba(184, 92, 117, 0.2);
+        transform: translateY(-2px);
     }
-    .back-link:hover {
-        background: #e0e0e0;
+    .btn-secondary {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--border);
+    }
+    .btn-secondary:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(184, 92, 117, 0.02);
     }
 </style>
-<div class="container">
-    <h2>Your Cart</h2>
+
+<div class="cart-container">
+    <h2>Shopping Cart</h2>
+    
     {% if items %}
-        {% for item in items %}
-            <div class="cart-item">
-                <div class="item-info">
-                    <div class="item-name">{{ item.bag.brand }} {{ item.bag.model_name }}</div>
-                    <div class="item-price">Quantity: {{ item.quantity }} x {{ item.price_at_time }} zł</div>
+        <div id="cart-items">
+            {% for item in items %}
+                <div class="cart-item">
+                    <div class="item-left">
+                        {% if item.bag.photo %}
+                            <img class="item-image" src="{{ item.bag.photo.url }}" alt="{{ item.bag.brand }}">
+                        {% endif %}
+                        <div class="item-info">
+                            <div class="item-name">{{ item.bag.brand }} {{ item.bag.model_name }}</div>
+                            <div class="item-quantity">Quantity: {{ item.quantity }}</div>
+                        </div>
+                    </div>
+                    <div class="item-right">
+                        <div class="item-price">{{ item.quantity }} x {{ item.price_at_time }} zł</div>
+                        <a href="{% url 'store:remove-from-cart' item.id %}" class="btn-remove">Remove</a>
+                    </div>
                 </div>
-                <div style="font-weight: bold;">{{ item.quantity }} x {{ item.price_at_time }} zł</div>
-            </div>
-        {% endfor %}
-        <div class="total">Total: {{ total }} zł</div>
+            {% endfor %}
+        </div>
+        
+        <div class="total-section">
+            <div class="total-label">TOTAL</div>
+            <div class="total-amount">{{ total }} zł</div>
+        </div>
+        
         <div class="button-group">
-            <a href="{% url 'store:checkout' %}" class="checkout-btn">Checkout</a>
-            <a href="{% url 'store:main-page' %}" class="back-link">Continue Shopping</a>
+            <a href="{% url 'store:main-page' %}" class="btn btn-secondary">← Continue Shopping</a>
+            <a href="{% url 'store:checkout' %}" class="btn btn-primary">Proceed to Checkout →</a>
         </div>
     {% else %}
-        <div class="empty-cart">Your cart is empty</div>
+        <div class="empty-cart">
+            <div class="empty-cart-icon">🛍️</div>
+            <p>Your cart is empty</p>
+            <a href="{% url 'store:main-page' %}" class="btn btn-primary" style="display: inline-block; margin-top: 20px;">Start Shopping</a>
+        </div>
     {% endif %}
 </div>
+
 {% endblock %}

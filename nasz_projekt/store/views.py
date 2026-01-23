@@ -459,3 +459,21 @@ def go_to_order_summary(request):
     return redirect('store:order-summary')
 
 
+@login_required(login_url='store:login-page')
+def remove_from_cart(request, item_id):
+    try:
+        # Ensure User_acc exists
+        user_acc = request.user.user_acc
+    except User_acc.DoesNotExist:
+        return redirect('store:login-page')
+    
+    try:
+        cart = Cart.objects.get(user_cart=user_acc)
+        item = CartItem.objects.get(id=item_id, cart=cart)
+        item.delete()
+    except (Cart.DoesNotExist, CartItem.DoesNotExist):
+        pass
+    
+    return redirect('store:cart')
+
+
