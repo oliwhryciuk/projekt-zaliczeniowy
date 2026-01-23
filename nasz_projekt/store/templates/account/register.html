@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+<style>
+    .container { 
+        max-width: 500px; 
+        margin: 40px auto; 
+        background: var(--white); 
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); 
+        padding: 50px;
+    }
+    h2 { 
+        text-align: center; 
+        margin: 0 0 30px 0;
+        font-size: 1.8em;
+        color: var(--primary);
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 15px;
+    }
+    form { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 20px; 
+    }
+    .form-group { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 8px; 
+    }
+    label { 
+        font-weight: 600;
+        color: var(--text);
+        font-size: 0.95em;
+    }
+    input[type="text"], input[type="password"], input[type="email"], input[type="tel"] { 
+        width: 100%; 
+        padding: 12px 14px; 
+        border: 1px solid var(--border); 
+        font-size: 1em; 
+        box-sizing: border-box;
+        transition: all 0.3s;
+        background: var(--white);
+        font-family: inherit;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus { 
+        outline: none; 
+        border-color: var(--accent); 
+        background-color: rgba(184, 92, 117, 0.02);
+        box-shadow: 0 0 0 3px rgba(184, 92, 117, 0.08);
+    }
+    input.error { 
+        border-color: #b00; 
+        background-color: #fff5f5; 
+    }
+    .error-message { 
+        color: #b00; 
+        font-size: 0.9em; 
+    }
+    .error-list { 
+        list-style: none; 
+        padding: 0; 
+        margin: 0; 
+    }
+    .error-list li { 
+        color: #b00; 
+        font-size: 0.9em; 
+        margin: 5px 0; 
+    }
+    .general-error { 
+        color: #b00; 
+        text-align: center; 
+        margin-bottom: 20px; 
+        font-weight: bold;
+        padding: 15px;
+        background: #fff5f5;
+    }
+    button { 
+        width: 100%; 
+        padding: 14px 16px; 
+        background: var(--accent); 
+        color: var(--white); 
+        border: none; 
+        font-size: 1em; 
+        cursor: pointer; 
+        font-weight: 600;
+        transition: all 0.3s;
+        letter-spacing: 0.5px;
+    }
+    button:hover { 
+        background: var(--accent-dark); 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(184, 92, 117, 0.25);
+    }
+    .back { 
+        text-align: center; 
+        margin-top: 20px; 
+    }
+    .back a { 
+        color: var(--accent); 
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        position: relative;
+        letter-spacing: 0.3px;
+    }
+    .back a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transition: transform 0.3s;
+    }
+    .back a:hover::after {
+        transform: scaleX(1);
+    }
+    .back a:hover { 
+        opacity: 0.7;
+    }
+</style>
+<div class="container">
+    <h2>Registration</h2>
+    {% if error %}
+        <div class="general-error">
+            {% if error.items %}
+                {% for field, messages in error.items %}
+                    <div>{{ field }}: 
+                        {% if messages.0 %}
+                            {{ messages.0 }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                {{ error }}
+            {% endif %}
+        </div>
+    {% endif %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <ul class="error-list">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit">Register</button>
+    </form>
+    <div class="back">
+        <a href="{% url 'store:login-page' %}">Already have an account? Log in</a>
+    </div>
+</div>
+{% endblock %}

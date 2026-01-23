@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Bagz{% endblock %}
+
+{% block content %}
+<style>
+    .auth-container {
+        max-width: 500px;
+        margin: 0 auto;
+        background: var(--white);
+        padding: 60px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+    h2 {
+        text-align: center;
+        margin: 0 0 40px 0;
+        font-size: 2em;
+        color: var(--primary);
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--primary);
+        font-size: 0.95em;
+        letter-spacing: 0.3px;
+    }
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 0;
+        border: 1px solid var(--border);
+        font-size: 1em;
+        box-sizing: border-box;
+        transition: all 0.3s;
+        background: var(--white);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+        outline: none;
+        border-color: var(--accent);
+        background: #faf8f6;
+        box-shadow: 0 0 0 4px rgba(184, 92, 117, 0.08);
+    }
+    button {
+        width: 100%;
+        padding: 16px;
+        background: var(--accent);
+        color: var(--white);
+        border: none;
+        border-radius: 0;
+        font-size: 1.05em;
+        cursor: pointer;
+        font-weight: 700;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        margin-top: 10px;
+    }
+    button:hover {
+        background: var(--accent-dark);
+        box-shadow: 0 8px 24px rgba(184, 92, 117, 0.2);
+        transform: translateY(-2px);
+    }
+    .error {
+        color: #d9534f;
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        padding: 14px;
+        background: #fdf6f6;
+        border: 1px solid #e8b9b9;
+        border-radius: 0;
+        font-size: 0.95em;
+    }
+    .auth-links {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid var(--border);
+    }
+    .auth-links p {
+        color: var(--text-light);
+        margin-bottom: 8px;
+        font-size: 0.95em;
+    }
+    .auth-links a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.3s;
+    }
+    .auth-links a:hover {
+        color: var(--accent-dark);
+    }
+    .back {
+        text-align: center;
+        margin-top: 25px;
+    }
+    .back a {
+        color: var(--text-light);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+        font-size: 0.9em;
+    }
+    .back a:hover {
+        color: var(--accent);
+    }
+</style>
+
+<div class="auth-container">
+    <h2>Login</h2>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">LOGIN</button>
+    </form>
+    <div class="auth-links">
+        <p>Don't have an account? <a href="{% url 'store:register-page' %}">Register here</a></p>
+    </div>
+    <div class="back">
+        <a href="{% url 'store:main-page' %}">← Back to Store</a>
+    </div>
+</div>
+{% endblock %}

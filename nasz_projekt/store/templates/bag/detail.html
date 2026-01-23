@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}{{ bag.brand }} {{ bag.model_name }} - Details{% endblock %}
+
+{% block content %}
+<style>
+    .container { 
+        max-width: 500px; 
+        margin: 40px auto; 
+        background: var(--white); 
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); 
+        padding: 50px;
+    }
+    .bag-photo { 
+        width: 240px; 
+        height: 240px; 
+        object-fit: cover; 
+        background: var(--light-bg); 
+        display: block; 
+        margin: 0 auto 30px auto; 
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s;
+    }
+    .bag-photo:hover {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+    .bag-title { 
+        font-size: 1.5em; 
+        font-weight: 600; 
+        text-align: center; 
+        margin-bottom: 10px;
+        color: var(--primary);
+    }
+    .bag-meta { 
+        color: var(--accent); 
+        font-size: 1.25em; 
+        text-align: center; 
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+    .bag-details { 
+        margin-bottom: 30px;
+        background: var(--light-bg);
+        padding: 20px;
+        border: 1px solid var(--border);
+        font-size: 0.95em;
+    }
+    .bag-details div {
+        margin-bottom: 10px;
+        color: var(--text);
+        font-weight: 500;
+    }
+    .bag-details div:last-child {
+        margin-bottom: 0;
+    }
+    .error { 
+        color: #b00; 
+        text-align: center; 
+        margin-bottom: 15px;
+        font-weight: bold;
+        padding: 12px 15px;
+        background: #fff5f5;
+        border-left: 3px solid #b00;
+        font-size: 0.95em;
+    }
+    .success { 
+        color: #080; 
+        text-align: center; 
+        margin-bottom: 15px;
+        font-weight: bold;
+        padding: 12px 15px;
+        background: #f5fff5;
+        border-left: 3px solid #080;
+        font-size: 0.95em;
+    }
+    .form-compact { 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 12px; 
+        margin: 30px 0;
+        flex-wrap: wrap;
+    }
+    .form-compact select { 
+        padding: 12px 14px; 
+        font-size: 0.95em; 
+        border: 1px solid var(--border); 
+        background: var(--white);
+        color: var(--text);
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+    .form-compact select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(184, 92, 117, 0.08);
+    }
+    .form-compact button { 
+        padding: 12px 24px; 
+        font-size: 0.95em; 
+        background: var(--accent); 
+        color: var(--white); 
+        border: none; 
+        cursor: pointer; 
+        font-weight: 600;
+        transition: all 0.3s;
+        letter-spacing: 0.5px;
+    }
+    .form-compact button:hover { 
+        background: var(--accent-dark); 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(184, 92, 117, 0.25);
+    }
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+        padding: 12px 20px;
+        background: var(--light-bg);
+        color: var(--primary);
+        text-decoration: none;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
+        font-size: 0.95em;
+        font-weight: 500;
+    }
+    .back-link:hover {
+        background: var(--white);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+</style>
+<div class="container">
+    {% if bag.photo %}
+        <img class="bag-photo" src="{{ bag.photo.url }}" alt="Bag photo">
+    {% endif %}
+    <div class="bag-title">{{ bag.brand }} {{ bag.model_name }}</div>
+    <div class="bag-meta">Price: {{ bag.price }} zł</div>
+    <div class="bag-details">
+        <div>Size: {{ bag.get_size_display }}</div>
+        <div>Color: {{ bag.get_color_display }}</div>
+        <div>Material: {{ bag.get_fabric_display }}</div>
+        <div>Available: {{ bag.amount }}</div>
+    </div>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    {% if success %}<div class="success">{{ success }}</div>{% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-compact">
+            <select name="quantity" id="quantity">
+                {% for i in "12345" %}
+                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Add to cart</button>
+        </div>
+    </form>
+    <a href="{% url 'store:main-page' %}" class="back-link">Back to main page</a>
+</div>
+{% endblock %}

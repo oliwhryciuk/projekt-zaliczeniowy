@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Bagz - Luxury Bags{% endblock %}
+
+{% block content %}
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .main-panes { 
+        display: flex; 
+        justify-content: center; 
+        gap: 30px; 
+        margin: 0 0 30px 0;
+        flex-wrap: wrap;
+        animation: fadeIn 0.8s ease-in 0.2s both;
+    }
+    .pane { 
+        border-radius: 0; 
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); 
+        text-align: center; 
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        cursor: pointer; 
+        text-decoration: none; 
+        color: #fff;
+        width: 300px;
+        height: 300px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .pane-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pane-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.25);
+        transition: background 0.4s;
+        z-index: 2;
+    }
+    .pane-text {
+        position: relative;
+        z-index: 3;
+        font-size: 2.5em;
+        font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        letter-spacing: 2px;
+    }
+    .pane:hover .pane-overlay {
+        background: rgba(184, 92, 117, 0.4);
+    }
+    .pane:hover .pane-image {
+        transform: scale(1.05);
+    }
+    .pane:hover {
+        box-shadow: 0 16px 40px rgba(184, 92, 117, 0.15);
+        transform: translateY(-8px);
+    }
+    .section-title {
+        text-align: center;
+        font-size: 2.2em;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 30px 0 30px 0;
+        letter-spacing: 1px;
+        position: relative;
+        padding-bottom: 20px;
+    }
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--accent);
+    }
+    .bags-list { 
+        max-width: 1100px; 
+        margin: 0 auto 30px auto; 
+        background: var(--white); 
+        border-radius: 0; 
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); 
+        padding: 40px;
+    }
+    .bag-item { 
+        display: flex; 
+        align-items: center; 
+        gap: 20px; 
+        border-bottom: 1px solid var(--border); 
+        padding: 15px 0; 
+        transition: all 0.3s;
+    }
+    .bag-item:hover {
+        background: linear-gradient(to right, rgba(184, 92, 117, 0.02), transparent);
+        padding-left: 10px;
+    }
+    .bag-item:last-child { 
+        border-bottom: none; 
+    }
+    .bag-photo { 
+        width: 120px; 
+        height: 120px; 
+        object-fit: cover; 
+        border-radius: 0; 
+        background: var(--light-bg);
+        flex-shrink: 0;
+        margin-left: 10px;
+        border: 2px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s;
+    }
+    .bag-item:hover .bag-photo {
+        box-shadow: 0 8px 20px rgba(184, 92, 117, 0.12);
+        border-color: var(--accent);
+    }
+    .bag-info { 
+        flex: 1; 
+        min-width: 0;
+    }
+    .bag-title { 
+        font-size: 1.2em; 
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--primary);
+    }
+    .bag-title a { 
+        color: var(--primary); 
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .bag-title a:hover { 
+        color: var(--accent);
+    }
+    .bag-meta { 
+        color: var(--text-light); 
+        font-size: 0.95em;
+        font-weight: 500;
+    }
+    .bag-price {
+        color: var(--accent);
+        font-size: 1.3em;
+        font-weight: 700;
+        margin-top: 5px;
+    }
+    .back-to-top {
+        position: static;
+        width: 50px;
+        height: 50px;
+        background: var(--accent);
+        color: var(--white);
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        font-weight: 700;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(184, 92, 117, 0.2);
+        z-index: 100;
+        margin: 20px auto 0 auto;
+    }
+    .back-to-top:hover {
+        background: var(--accent-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(184, 92, 117, 0.3);
+    }
+    .back-to-top.show {
+        display: flex;
+    }
+</style>
+
+<div class="main-panes">
+    <a class="pane" href="{% url 'store:small-bags' %}">
+        <img class="pane-image" src="{% static 'images/mini_bags.jpg' %}" alt="Mini Bags">
+        <div class="pane-overlay"></div>
+        <div class="pane-text">MINI</div>
+    </a>
+    <a class="pane" href="{% url 'store:medium-bags' %}">
+        <img class="pane-image" src="{% static 'images/midi_bags.jpg' %}" alt="Midi Bags">
+        <div class="pane-overlay"></div>
+        <div class="pane-text">MIDI</div>
+    </a>
+    <a class="pane" href="{% url 'store:big-bags' %}">
+        <img class="pane-image" src="{% static 'images/maxi_bags.jpg' %}" alt="Maxi Bags">
+        <div class="pane-overlay"></div>
+        <div class="pane-text">MAXI</div>
+    </a>
+</div>
+
+<h2 class="section-title">Featured Collection</h2>
+
+<div class="bags-list">
+    <div id="bags-list"></div>
+</div>
+
+<button class="back-to-top" id="backToTop">↑</button>
+
+<script>
+    async function fetchBags() {
+        const resp = await fetch('/api/bags/');
+        const bags = await resp.json();
+        const list = document.getElementById('bags-list');
+        list.innerHTML = '';
+        bags.forEach(bag => {
+            const div = document.createElement('div');
+            div.className = 'bag-item';
+            let photoPath = '';
+            if (bag.photo) {
+                if (bag.photo.startsWith('/media/')) {
+                    photoPath = bag.photo;
+                } else if (bag.photo.startsWith('media/')) {
+                    photoPath = '/' + bag.photo;
+                } else {
+                    photoPath = '/media/' + bag.photo;
+                }
+            }
+            div.innerHTML = `
+                <img class="bag-photo" src="${photoPath}" alt="Bag photo" onerror="this.style.display='none'">
+                <div class="bag-info">
+                    <div class="bag-title"><a href="/bags/${bag.id}/">${bag.brand} ${bag.model_name}</a></div>
+                    <div class="bag-meta">Premium Leather Crafted Handbag</div>
+                    <div class="bag-price">${bag.price} zł</div>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    }
+    window.onload = fetchBags;
+    
+    // Back to top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+{% endblock %}
