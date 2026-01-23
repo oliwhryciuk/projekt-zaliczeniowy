@@ -9,10 +9,6 @@ NAME_REGEX = r"^[A-Z][a-zA-Z\s'-]*$"
 ZIP_CODE_REGEX = r'^[0-9]{2}-?[0-9]{3}$|^[0-9]{5}$|^[A-Z0-9\s-]{3,10}$'
 
 def validate_name_starts_with_capital(value):
-    """
-    Validate that name starts with a capital letter.
-    Used for first name and last name fields.
-    """
     if not value:
         raise DjangoValidationError("This field cannot be empty.")
     value_str = str(value).strip()
@@ -25,7 +21,6 @@ def validate_name_starts_with_capital(value):
     return value
 
 def validate_email_format(value):
-    """Validate email format."""
     if not value:
         raise DjangoValidationError("Email cannot be empty.")
     value_str = str(value).strip()
@@ -34,10 +29,6 @@ def validate_email_format(value):
     return value
 
 def validate_phone_number(value):
-    """
-    Validate phone number format.
-    Must contain at least 9 digits.
-    """
     if not value:
         raise DjangoValidationError("Phone number cannot be empty.")
     # Remove spaces, dashes, and plus signs for checking
@@ -47,10 +38,6 @@ def validate_phone_number(value):
     return value
 
 def validate_zip_code(value):
-    """
-    Validate zip code format.
-    Supports Polish format (XX-XXX), 5-digit format, and other international formats.
-    """
     if not value:
         raise DjangoValidationError("Zip code cannot be empty.")
     value_str = str(value).strip()
@@ -59,7 +46,6 @@ def validate_zip_code(value):
     return value
 
 def validate_not_empty(value):
-    """Validate that field is not empty."""
     if not value:
         raise DjangoValidationError("This field cannot be empty.")
     value_str = str(value).strip()

@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class BibliotekaConfig(AppConfig):
+class StoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'biblioteka'
+    name = 'store'
     
     def ready(self):
-        import biblioteka.models
+        import store.models

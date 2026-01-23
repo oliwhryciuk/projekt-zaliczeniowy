@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('biblioteka', '0003_rename_model_bag_model_name'),
+        ('store', '0003_rename_model_bag_model_name'),
     ]
 
     operations = [

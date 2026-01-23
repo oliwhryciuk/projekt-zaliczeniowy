@@ -1,0 +1,455 @@
+/* Store App CSS
+   Follows the reference PAW project structure
+*/
+
+:root {
+    --primary-color: #222;
+    --secondary-color: #444;
+    --background-color: #f7f7f7;
+    --white: #fff;
+    --border-color: #eee;
+    --text-color: #333;
+    --light-text: #666;
+    --error-color: #b00;
+    --success-color: #080;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Header Styles */
+#header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#header h1 {
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#header a {
+    color: var(--white);
+    text-decoration: none;
+    margin-left: 20px;
+    transition: opacity 0.3s;
+}
+
+#header a:hover {
+    opacity: 0.8;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: var(--white);
+    padding: 15px 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin: 20px 0;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Content Area */
+#content {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Container Styles */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: #f9f9f9;
+}
+
+input.error {
+    border-color: var(--error-color);
+    background-color: #fff5f5;
+}
+
+/* Button Styles */
+button,
+.btn {
+    padding: 12px 30px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover,
+.btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.btn-secondary {
+    background-color: #ccc;
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: #aaa;
+}
+
+/* Message Styles */
+.error {
+    color: var(--error-color);
+    background-color: #fff5f5;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--error-color);
+}
+
+.error-list {
+    list-style: none;
+    padding: 0;
+}
+
+.error-list li {
+    margin: 5px 0;
+    font-size: 0.95em;
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.success {
+    color: var(--success-color);
+    background-color: #f0fff0;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--success-color);
+}
+
+/* Bag Styles */
+.bag-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding: 18px 0;
+    transition: background-color 0.2s;
+}
+
+.bag-item:last-child {
+    border-bottom: none;
+}
+
+.bag-item:hover {
+    background-color: #f9f9f9;
+}
+
+.bag-photo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: var(--border-color);
+}
+
+.bag-info {
+    flex: 1;
+}
+
+.bag-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.bag-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.bag-title a:hover {
+    text-decoration: underline;
+}
+
+.bag-meta {
+    color: var(--light-text);
+    font-size: 0.95em;
+}
+
+/* Cart Styles */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.item-price {
+    color: var(--light-text);
+    font-size: 0.95em;
+}
+
+.total {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 20px 0;
+    border-top: 2px solid var(--border-color);
+}
+
+.empty-cart {
+    text-align: center;
+    color: #999;
+    padding: 40px 0;
+    font-size: 1.1em;
+}
+
+/* List Styles */
+.bags-list {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.bags-list h2 {
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+/* Pane Styles */
+.pane {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px 50px;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 500;
+    transition: box-shadow 0.2s, background-color 0.2s;
+    cursor: pointer;
+}
+
+.pane:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0;
+}
+
+.pane a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Main Panes */
+.main-panes {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 40px 0 30px 0;
+    flex-wrap: wrap;
+}
+
+/* Sidebar Styles */
+#sidebar {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #header h1 {
+        font-size: 1.5em;
+    }
+
+    nav {
+        padding: 10px 20px;
+    }
+
+    nav a {
+        margin-right: 10px;
+        font-size: 0.9em;
+    }
+
+    #content {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .main-panes {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .bag-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .bag-photo {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    button,
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

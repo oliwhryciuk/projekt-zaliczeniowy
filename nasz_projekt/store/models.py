@@ -8,8 +8,6 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
-#dodawanie torebek 
-
 SIZE = models.IntegerChoices(
     'SIZE',
     'mini midi maxi'
@@ -107,7 +105,7 @@ class Order(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_account(sender, instance, created, **kwargs):
-    """Automatically create User_acc and Token when a new User is created"""
+    # Automatically create User_acc and Token when a new User is created
     if created:
         # Create User_acc with default values
         try:

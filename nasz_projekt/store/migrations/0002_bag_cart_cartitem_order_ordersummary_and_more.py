@@ -10,7 +10,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('biblioteka', '0001_initial'),
+        ('store', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -41,8 +41,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveIntegerField(default=1)),
                 ('price_at_time', models.PositiveIntegerField()),
-                ('bag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblioteka.bag')),
-                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='biblioteka.cart')),
+                ('bag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='store.bag')),
+                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.cart')),
             ],
             options={
                 'unique_together': {('cart', 'bag')},
@@ -71,8 +71,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveIntegerField()),
                 ('price_at_time', models.PositiveIntegerField()),
-                ('bag', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='biblioteka.bag')),
-                ('summary', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='biblioteka.ordersummary')),
+                ('bag', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='store.bag')),
+                ('summary', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.ordersummary')),
             ],
         ),
         migrations.CreateModel(
@@ -97,16 +97,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='ordersummary',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblioteka.user_acc'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='store.user_acc'),
         ),
         migrations.AddField(
             model_name='order',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblioteka.user_acc'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='store.user_acc'),
         ),
         migrations.AddField(
             model_name='cart',
             name='user_cart',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='biblioteka.user_acc'),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='store.user_acc'),
         ),
     ]

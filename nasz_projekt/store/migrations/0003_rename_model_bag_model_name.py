@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('biblioteka', '0002_bag_cart_cartitem_order_ordersummary_and_more'),
+        ('store', '0002_bag_cart_cartitem_order_ordersummary_and_more'),
     ]
 
     operations = [
