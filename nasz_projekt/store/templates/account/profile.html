@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block title %}My Account - Bagz{% endblock %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: var(--white);
+        border-radius: 8px;
+        padding: 40px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 20px;
+    }
+
+    .profile-header h1 {
+        color: var(--primary);
+        font-size: 2em;
+        margin: 10px 0;
+        letter-spacing: 1px;
+    }
+
+    .profile-header p {
+        color: var(--text-light);
+        font-size: 0.95em;
+    }
+
+    .profile-section {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        color: var(--accent);
+        font-size: 1.3em;
+        font-weight: 600;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .info-item {
+        padding: 15px;
+        background: var(--light-bg);
+        border-radius: 6px;
+        border-left: 4px solid var(--accent);
+    }
+
+    .info-label {
+        color: var(--text-light);
+        font-size: 0.85em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: var(--text);
+        font-size: 1.05em;
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary {
+        background: var(--accent);
+        color: var(--white);
+        padding: 12px 30px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary:hover {
+        background: var(--accent-dark);
+    }
+
+    .btn-secondary {
+        background: var(--light-bg);
+        color: var(--text);
+        padding: 12px 30px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-secondary:hover {
+        background: var(--border);
+        border-color: var(--text-light);
+    }
+
+    .profile-photo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 3em;
+        font-weight: bold;
+        margin: 0 auto;
+        box-shadow: 0 4px 12px rgba(184, 92, 117, 0.2);
+    }
+
+    .empty-state {
+        color: var(--text-light);
+        font-style: italic;
+        padding: 15px;
+        background: var(--light-bg);
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            padding: 20px;
+        }
+
+        .profile-header h1 {
+            font-size: 1.5em;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-photo">
+            <div class="avatar">{{ django_user.username|first|upper }}</div>
+        </div>
+        <h1>{{ django_user.username }}</h1>
+        <p>Account Information</p>
+    </div>
+
+    <!-- Personal Information -->
+    <div class="profile-section">
+        <div class="section-title">Personal Information</div>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">First Name</div>
+                <div class="info-value">{{ user_acc.name|default:"Not provided" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Last Name</div>
+                <div class="info-value">{{ user_acc.surname|default:"Not provided" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Email</div>
+                <div class="info-value">{{ user_acc.email|default:"Not provided" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Phone Number</div>
+                <div class="info-value">{{ user_acc.phone_number|default:"Not provided" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Address Information -->
+    <div class="profile-section">
+        <div class="section-title">Address</div>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Street</div>
+                <div class="info-value">{{ user_acc.street_name|default:"Not provided" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">House Number</div>
+                <div class="info-value">{{ user_acc.home_nr|default:"Not provided" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">City</div>
+                <div class="info-value">{{ user_acc.city|default:"Not provided" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Postal Code</div>
+                <div class="info-value">{{ user_acc.zip_code|default:"Not provided" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Country</div>
+                <div class="info-value">{{ user_acc.country|default:"Not provided" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Actions -->
+    <div class="button-group">
+        <a href="{% url 'store:main-page' %}" class="btn-secondary">Back to Store</a>
+        <a href="{% url 'store:edit-account' %}" class="btn-primary">Edit Account</a>
+        <a href="{% url 'store:cart' %}" class="btn-primary">View Cart</a>
+        <a href="{% url 'store:logout' %}" class="btn-secondary">Logout</a>
+    </div>
+</div>
+{% endblock %}
