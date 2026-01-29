@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.contrib.auth.decorators import login_required
 
-from .models import Bag, Cart, CartItem, OrderSummary, OrderSummaryItem, Order, User_acc
+from .models import Bag, Cart, CartItem, OrderSummary, OrderSummaryItem, Order, User_acc, COLOR
 from .serializers import BagSerializer, CartSerializer, OrderSummarySerializer
 from .forms import CheckoutForm, CustomUserCreationForm
 from .permissions import CanViewBag, CanViewCart, CanViewOrder
@@ -159,7 +159,22 @@ def get_auth_token(request):
 def main_page(request):
     if request.user.is_authenticated and request.user.is_staff:
         return redirect('/admin/')
-    return render(request, "main.html")
+    
+    bags = Bag.objects.all()
+    selected_color = request.GET.get('color')
+    
+    if selected_color:
+        try:
+            color_id = int(selected_color)
+            bags = bags.filter(color=color_id)
+        except (ValueError, TypeError):
+            pass
+    
+    return render(request, "main.html", {
+        'bags': bags,
+        'color_choices': COLOR.choices,
+        'selected_color': selected_color
+    })
 
 
 @csrf_protect
@@ -212,7 +227,20 @@ def register_page(request):
 
 def bags_list_html(request):
     bags = Bag.objects.all()
-    return render(request, "bag/detail.html", {'bags': bags})
+    selected_color = request.GET.get('color')
+    
+    if selected_color:
+        try:
+            color_id = int(selected_color)
+            bags = bags.filter(color=color_id)
+        except (ValueError, TypeError):
+            pass
+    
+    return render(request, "bag/detail.html", {
+        'bags': bags,
+        'color_choices': COLOR.choices,
+        'selected_color': selected_color
+    })
 
 
 def bag_detail_html(request, bag_id):
@@ -283,17 +311,56 @@ def bag_detail_html(request, bag_id):
 
 def small_bags_page(request):
     bags = Bag.objects.filter(size=1)
-    return render(request, "bag/small_bags.html", {'bags': bags})
+    selected_color = request.GET.get('color')
+    
+    if selected_color:
+        try:
+            color_id = int(selected_color)
+            bags = bags.filter(color=color_id)
+        except (ValueError, TypeError):
+            pass
+    
+    return render(request, "bag/small_bags.html", {
+        'bags': bags,
+        'color_choices': COLOR.choices,
+        'selected_color': selected_color
+    })
 
 
 def medium_bags_page(request):
     bags = Bag.objects.filter(size=2)
-    return render(request, "bag/medium_bags.html", {'bags': bags})
+    selected_color = request.GET.get('color')
+    
+    if selected_color:
+        try:
+            color_id = int(selected_color)
+            bags = bags.filter(color=color_id)
+        except (ValueError, TypeError):
+            pass
+    
+    return render(request, "bag/medium_bags.html", {
+        'bags': bags,
+        'color_choices': COLOR.choices,
+        'selected_color': selected_color
+    })
 
 
 def big_bags_page(request):
     bags = Bag.objects.filter(size=3)
-    return render(request, "bag/big_bags.html", {'bags': bags})
+    selected_color = request.GET.get('color')
+    
+    if selected_color:
+        try:
+            color_id = int(selected_color)
+            bags = bags.filter(color=color_id)
+        except (ValueError, TypeError):
+            pass
+    
+    return render(request, "bag/big_bags.html", {
+        'bags': bags,
+        'color_choices': COLOR.choices,
+        'selected_color': selected_color
+    })
 
 
 @login_required(login_url='store:login-page')
@@ -475,5 +542,112 @@ def remove_from_cart(request, item_id):
         pass
     
     return redirect('store:cart')
+
+
+@login_required(login_url='store:login-page')
+def account_profile(request):
+    """Display the user's account profile page with their information"""
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('/admin/')
+    
+    try:
+        # Ensure User_acc exists, create if needed
+        user_acc, _ = User_acc.objects.get_or_create(
+            django_user=request.user,
+            defaults={
+                'name': request.user.first_name or request.user.username,
+                'surname': request.user.last_name or request.user.username,
+                'email': request.user.email or f'{request.user.username}@example.com',
+                'street_name': 'Not provided',
+                'home_nr': '0',
+                'city': 'Not provided',
+                'zip_code': '00-000',
+                'country': 'US',
+                'phone_number': '+1234567890',
+            }
+        )
+    except Exception:
+        return redirect('store:login-page')
+    
+    return render(request, 'account/profile.html', {
+        'user_acc': user_acc,
+        'django_user': request.user
+    })
+
+
+@login_required(login_url='store:login-page')
+def edit_account(request):
+    """Edit the user's account information"""
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('/admin/')
+    
+    try:
+        # Ensure User_acc exists, create if needed
+        user_acc, _ = User_acc.objects.get_or_create(
+            django_user=request.user,
+            defaults={
+                'name': request.user.first_name or request.user.username,
+                'surname': request.user.last_name or request.user.username,
+                'email': request.user.email or f'{request.user.username}@example.com',
+                'street_name': 'Not provided',
+                'home_nr': '0',
+                'city': 'Not provided',
+                'zip_code': '00-000',
+                'country': 'US',
+                'phone_number': '+1234567890',
+            }
+        )
+    except Exception:
+        return redirect('store:login-page')
+    
+    form = None
+    success = None
+    error = None
+    
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    user_acc.name = form.cleaned_data['name']
+                    user_acc.surname = form.cleaned_data['surname']
+                    user_acc.email = form.cleaned_data['email']
+                    user_acc.street_name = form.cleaned_data['street_name']
+                    user_acc.home_nr = form.cleaned_data['home_nr']
+                    user_acc.city = form.cleaned_data['city']
+                    user_acc.zip_code = form.cleaned_data['zip_code']
+                    user_acc.country = form.cleaned_data['country']
+                    user_acc.phone_number = form.cleaned_data['phone_number']
+                    user_acc.save()
+                    
+                    # Also update the Django user fields
+                    request.user.first_name = form.cleaned_data['name']
+                    request.user.last_name = form.cleaned_data['surname']
+                    request.user.email = form.cleaned_data['email']
+                    request.user.save()
+                    
+                    success = 'Account information updated successfully!'
+            except Exception as e:
+                error = f'Error updating account: {str(e)}'
+    else:
+        form = CheckoutForm(initial={
+            'name': user_acc.name,
+            'surname': user_acc.surname,
+            'email': user_acc.email,
+            'street_name': user_acc.street_name,
+            'home_nr': user_acc.home_nr,
+            'city': user_acc.city,
+            'zip_code': user_acc.zip_code,
+            'country': user_acc.country,
+            'phone_number': user_acc.phone_number
+        })
+    
+    return render(request, 'account/edit.html', {
+        'user_acc': user_acc,
+        'django_user': request.user,
+        'form': form,
+        'success': success,
+        'error': error
+    })
 
 

@@ -79,6 +79,12 @@
         .header .username {
             color: #c1dbe8;
             font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        .header .username:hover {
+            color: var(--accent-dark);
         }
         #content {
             flex: 1;
@@ -92,7 +98,7 @@
         <div class="company" onclick="window.location='{% url 'store:main-page' %}';">BAGZ</div>
         <div class="auth">
             {% if request.user.is_authenticated %}
-                <span class="username">{{ request.user.username }}</span>
+                <a href="{% url 'store:account-profile' %}" class="username">{{ request.user.username }}</a>
                 <a href="{% url 'store:cart' %}">Cart</a>
                 <a href="{% url 'store:logout' %}">Logout</a>
             {% else %}
