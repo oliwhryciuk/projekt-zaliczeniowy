@@ -1,6 +1,3 @@
-/* Store App CSS
-   Follows the reference PAW project structure
-*/
 
 :root {
     --primary-color: #222;
@@ -27,7 +24,6 @@ body {
     line-height: 1.6;
 }
 
-/* Header Styles */
 #header {
     background-color: var(--primary-color);
     color: var(--white);
@@ -55,7 +51,6 @@ body {
     opacity: 0.8;
 }
 
-/* Navigation Styles */
 nav {
     background-color: var(--white);
     padding: 15px 40px;
@@ -76,7 +71,6 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* Content Area */
 #content {
     max-width: 1200px;
     margin: 20px auto;
@@ -86,7 +80,6 @@ nav a:hover {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Container Styles */
 .container {
     max-width: 900px;
     margin: 40px auto;
@@ -96,7 +89,6 @@ nav a:hover {
     padding: 30px;
 }
 
-/* Form Styles */
 .form-group {
     margin-bottom: 20px;
     display: flex;
@@ -140,7 +132,6 @@ input.error {
     background-color: #fff5f5;
 }
 
-/* Button Styles */
 button,
 .btn {
     padding: 12px 30px;
@@ -170,7 +161,6 @@ button:hover,
     background-color: #aaa;
 }
 
-/* Message Styles */
 .error {
     color: var(--error-color);
     background-color: #fff5f5;
@@ -205,7 +195,6 @@ button:hover,
     border-left: 4px solid var(--success-color);
 }
 
-/* Bag Styles */
 .bag-item {
     display: flex;
     align-items: center;
@@ -255,7 +244,6 @@ button:hover,
     font-size: 0.95em;
 }
 
-/* Cart Styles */
 .cart-item {
     display: flex;
     justify-content: space-between;
@@ -298,7 +286,6 @@ button:hover,
     font-size: 1.1em;
 }
 
-/* List Styles */
 .bags-list {
     max-width: 900px;
     margin: 40px auto;
@@ -313,7 +300,6 @@ button:hover,
     margin-bottom: 30px;
 }
 
-/* Pane Styles */
 .pane {
     background-color: var(--white);
     border-radius: 12px;
@@ -336,7 +322,6 @@ button:hover,
     text-decoration: none;
 }
 
-/* Main Panes */
 .main-panes {
     display: flex;
     justify-content: center;
@@ -345,7 +330,6 @@ button:hover,
     flex-wrap: wrap;
 }
 
-/* Sidebar Styles */
 #sidebar {
     max-width: 1200px;
     margin: 20px auto;
@@ -354,7 +338,6 @@ button:hover,
     border-radius: 5px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     #header {
         flex-direction: column;
@@ -411,7 +394,6 @@ button:hover,
     }
 }
 
-/* Utility Classes */
 .text-center {
     text-align: center;
 }

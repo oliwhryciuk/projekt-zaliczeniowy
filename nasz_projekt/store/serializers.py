@@ -126,7 +126,6 @@ class User_accSerializer(serializers.ModelSerializer):
         return value
     
     def validate(self, data):
-        # Additional validation for non-empty fields
         for field_name in ['street_name', 'home_nr', 'city', 'country']:
             if field_name in data:
                 try:

@@ -268,7 +268,6 @@ def bag_detail_html(request, bag_id):
             error = f'Not enough bags in stock. Available: {bag.amount}.'
         else:
             try:
-                # Ensure User_acc exists, create if needed
                 user_acc, _ = User_acc.objects.get_or_create(
                     django_user=request.user,
                     defaults={
@@ -369,7 +368,6 @@ def cart_page(request):
         return redirect('/admin/')
     
     try:
-        # Ensure User_acc exists, create if needed
         user_acc, _ = User_acc.objects.get_or_create(
             django_user=request.user,
             defaults={
@@ -404,7 +402,6 @@ def checkout(request):
         return redirect('/admin/')
     
     try:
-        # Ensure User_acc exists, create if needed
         user_acc, _ = User_acc.objects.get_or_create(
             django_user=request.user,
             defaults={
@@ -458,7 +455,6 @@ def checkout(request):
                         status='new'
                     )
                     
-                    # Update bag quantities in inventory
                     for item in cart.items.all():
                         bag = item.bag
                         bag.amount -= item.quantity
@@ -529,7 +525,6 @@ def go_to_order_summary(request):
 @login_required(login_url='store:login-page')
 def remove_from_cart(request, item_id):
     try:
-        # Ensure User_acc exists
         user_acc = request.user.user_acc
     except User_acc.DoesNotExist:
         return redirect('store:login-page')
@@ -551,7 +546,6 @@ def account_profile(request):
         return redirect('/admin/')
     
     try:
-        # Ensure User_acc exists, create if needed
         user_acc, _ = User_acc.objects.get_or_create(
             django_user=request.user,
             defaults={
@@ -582,7 +576,6 @@ def edit_account(request):
         return redirect('/admin/')
     
     try:
-        # Ensure User_acc exists, create if needed
         user_acc, _ = User_acc.objects.get_or_create(
             django_user=request.user,
             defaults={
@@ -620,7 +613,6 @@ def edit_account(request):
                     user_acc.phone_number = form.cleaned_data['phone_number']
                     user_acc.save()
                     
-                    # Also update the Django user fields
                     request.user.first_name = form.cleaned_data['name']
                     request.user.last_name = form.cleaned_data['surname']
                     request.user.email = form.cleaned_data['email']

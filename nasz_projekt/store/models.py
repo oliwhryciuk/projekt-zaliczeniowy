@@ -105,9 +105,7 @@ class Order(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_account(sender, instance, created, **kwargs):
-    # Automatically create User_acc and Token when a new User is created
     if created:
-        # Create User_acc with default values
         try:
             User_acc.objects.get_or_create(
                 django_user=instance,
@@ -126,9 +124,7 @@ def create_user_account(sender, instance, created, **kwargs):
         except Exception:
             pass
         
-        # Create authentication token
         Token.objects.get_or_create(user=instance)
 
-# Connect the signal
 post_save.connect(create_user_account, sender=User)
 
