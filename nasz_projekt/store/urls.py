@@ -5,7 +5,6 @@ from . import views
 app_name = 'store'
 
 urlpatterns = [
-    # API Endpoints
     path('api/bags/', views.bags_list, name='api-bags-list'),
     path('api/bags/size/small/', views.bags_small, name='api-bags-small'),
     path('api/bags/size/medium/', views.bags_medium, name='api-bags-medium'),
@@ -19,7 +18,6 @@ urlpatterns = [
     path('api/cart/', views.cart_view, name='api-cart'),
     path('api/order-summary/', views.summary_view, name='api-summary'),
     
-    # HTML Views
     path('', views.main_page, name='main-page'),
     path('login-page/', views.login_page, name='login-page'),
     path('register/', views.register_page, name='register-page'),

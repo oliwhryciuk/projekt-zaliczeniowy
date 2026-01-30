@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from .models import Bag, User_acc
 import re
 
-# Custom validators
 def validate_name_starts_with_capital(value):
     """Validate that name starts with a capital letter"""
     if not value:
@@ -21,7 +20,6 @@ def validate_email_format(value):
 
 def validate_phone_number(value):
     """Validate phone number format"""
-    # Remove spaces, dashes, and plus signs for checking
     cleaned = re.sub(r'[\s\-+()]', '', str(value))
     if not cleaned.isdigit() or len(cleaned) < 9:
         raise ValidationError("Phone number must contain at least 9 digits.")

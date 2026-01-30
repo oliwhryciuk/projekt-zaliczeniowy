@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Bag, User_acc, Cart, CartItem, OrderSummary, OrderSummaryItem, Order, SIZE, COLOR, FABRIC
+from .models import Bag, User_acc, Cart, CartItem, OrderSummary, OrderSummaryItem, Order
 import re
 
 ZIP_PL_REGEX = r"^\d{2}-\d{3}$"  
@@ -69,7 +69,6 @@ class User_accSerializer(serializers.ModelSerializer):
         return value
 
     def validate_phone_number(self, value):
-        # PhoneNumberField usually validates already, but we add a clear message:
         if hasattr(value, "is_valid") and not value.is_valid():
             raise serializers.ValidationError("Invalid phone number.")
         return value
@@ -244,7 +243,6 @@ class CheckoutSerializer(serializers.Serializer):
 
     def validate_phone_number(self, value):
         """Validate phone number (at least 9 digits, may contain spaces, dashes, parentheses)"""
-        # Remove common formatting characters
         cleaned = re.sub(r'[\s\-+().]', '', str(value))
         if not cleaned.isdigit():
             raise serializers.ValidationError("Phone number can only contain digits and formatting characters (spaces, dashes, parentheses).")
@@ -291,5 +289,4 @@ class CheckoutSerializer(serializers.Serializer):
 
     def validate(self, data):
         """Perform cross-field validation if needed"""
-        # Additional validation logic can be added here
         return data
